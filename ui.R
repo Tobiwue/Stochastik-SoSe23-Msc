@@ -5,27 +5,26 @@ library(ggplot2)
 library(shinyWidgets)
 library(grid)
 
-# read miete03 (provided by the lecturer and is unchanged)
-dataset <- read.csv('C:/Users/Tobia/Documents/Stochastik/data/housing.csv',
-                    header = TRUE)
+housing <- read.csv("./housing.csv", header = TRUE)
+chess <- read.csv("./chess.csv", header = TRUE)
 
 # Define UI for application that draws a histogram
 fluidPage(
   titlePanel("ShinyApp Stochastik SoSe23 - HTW Berlin FB4 MSC"),
-    tabsetPanel(
-      # Tab 1
-      tabPanel("Gaussian Distribution",
-        sidebarLayout(
-          sidebarPanel(
-            sliderInput("threshold_range", "Scope", 
-                  #min = 0, max = max(dataset$households), value = c(0, max(dataset$households)),step = 1)
-                  min = 0, max = 500, value = c(0, 500),step = 1)
-            ),
-    mainPanel(
-      plotOutput("gaussian_distribution_plot"),
-      verbatimTextOutput("summary_text")
-         )
-      )),
+  tabsetPanel(
+    # Tab 1
+    tabPanel("Gaussian Distribution",
+             sidebarLayout(
+               sidebarPanel(
+                 sliderInput("threshold_range", "Scope", 
+                             #min = 0, max = max(housing$households), value = c(0, max(housing$households)),step = 1)
+                             min = 0, max = 500, value = c(0, 500),step = 1)
+               ),
+               mainPanel(
+                 plotOutput("gaussian_distribution_plot"),
+                 verbatimTextOutput("summary_text")
+               )
+             )),
     # Tab 2
     tabPanel("Tab 2",
              sidebarLayout(
@@ -46,4 +45,4 @@ fluidPage(
                  # Hauptinhalt für Tab 3
                )
              ))
-))
+  ))
