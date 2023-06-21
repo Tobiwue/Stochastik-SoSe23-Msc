@@ -5,8 +5,8 @@ library(ggplot2)
 library(shinyWidgets)
 library(grid)
 
-housing <- read.csv("./housing.csv", header = TRUE)
-chess <- read.csv("./chess.csv", header = TRUE)
+housing <- read.csv("./data/housing.csv", header = TRUE)
+chess <- read.csv("./data/chess.csv", header = TRUE)
 
 # Define server logic required to draw a histogram
 function(input, output, session) {
