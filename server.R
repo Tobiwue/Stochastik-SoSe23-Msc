@@ -5,8 +5,13 @@ library(ggplot2)
 library(shinyWidgets)
 library(grid)
 
+<<<<<<< HEAD
 # read miete03 (provided by the lecturer and is unchanged)
 dataset <- read.csv('./data/housing.csv', header = TRUE)
+=======
+housing <- read.csv("./data/housing.csv", header = TRUE)
+chess <- read.csv("./data/chess.csv", header = TRUE)
+>>>>>>> 8331008de768b8e82fe8934da4269cad74ebafa4
 
 # Define server logic required to draw a histogram
 function(input, output, session) {
@@ -24,7 +29,7 @@ function(input, output, session) {
   calculate_normal <- reactive({
     range_start <- input$threshold_range[1]
     range_end <- input$threshold_range[2]
-    filtered_data <- subset(dataset, dataset$households >= range_start & dataset$households <= range_end)
+    filtered_data <- subset(housing, housing$households >= range_start & housing$households <= range_end)
     mean_value <- mean(filtered_data$households)
     sd_value <- sd(filtered_data$households)
     x <- seq(range_start, range_end, length.out = 100)
@@ -36,13 +41,18 @@ function(input, output, session) {
   output$summary_text <- renderText({
     range_start <- input$threshold_range[1]
     range_end <- input$threshold_range[2]
+<<<<<<< HEAD
     filtered_data <- subset(dataset, dataset$households >= range_start & dataset$households <= range_end)
+=======
+    
+    filtered_data <- subset(housing, housing$households >= range_start & housing$households <= range_end)
+>>>>>>> 8331008de768b8e82fe8934da4269cad74ebafa4
     mean_value <- mean(filtered_data$households)
     sd_value <- sd(filtered_data$households)
     quantiles <- range_interval()$quantiles
     
     paste(
-      " Range: [", range_start, "-", range_end, "]\n",
+      "Range: [", range_start, "-", range_end, "]\n",
       "Mean: ", round(mean_value, 2), "\n",
       "SD:   ", round(sd_value, 2),"\n",
       "Quantiles: \n",
@@ -52,6 +62,7 @@ function(input, output, session) {
     )
   })
   
+<<<<<<< HEAD
   # draw gaussian distribution zoomable plot
    output$gaussian_distribution_plot <- renderPlot({
       range_start <- input$threshold_range[1]
@@ -63,6 +74,18 @@ function(input, output, session) {
       
       mean_sd_plot<-ggplot() +
       geom_bar(data = filtered_data, aes(x = households), fill = "blue", color = "blue", binwidth = 0.1) +
+=======
+  # draw plot
+  output$gaussian_distribution_plot <- renderPlot({
+    range_start <- input$threshold_range[1]
+    range_end <- input$threshold_range[2]
+    filtered_data <- subset(housing, housing$households >= range_start & housing$households <= range_end)
+    mean_value <- mean(filtered_data$households)
+    sd_value <- sd(filtered_data$households)
+    
+    mean_sd_plot<-ggplot() +
+      geom_histogram(data = filtered_data, aes(x = households), binwidth = 0.1, fill = "blue", color = "black") +
+>>>>>>> 8331008de768b8e82fe8934da4269cad74ebafa4
       geom_line(data = calculate_normal(), aes(x = x, y = y), color = "red", size = 1) +
       geom_vline(xintercept = range_start, linetype = "dotted", color = "brown", size = 1) +
       geom_vline(xintercept = range_end, linetype = "dotted", color = "brown", size = 1) +
@@ -75,8 +98,14 @@ function(input, output, session) {
         
       labs(x = "Values", y = "Frequenzy") +
       theme_minimal()
+<<<<<<< HEAD
       print(mean_sd_plot)
       
+=======
+    
+    print(mean_sd_plot)
+    print(mean_sd_plot)
+>>>>>>> 8331008de768b8e82fe8934da4269cad74ebafa4
   })
    #draw distribution with adjustable intervals via slider input
    output$density <- renderPlot({
