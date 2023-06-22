@@ -6,8 +6,7 @@ library(shinyWidgets)
 library(grid)
 
 # read miete03 (provided by the lecturer and is unchanged)
-dataset <- read.csv('C:/Users/Tobia/Documents/Stochastik/data/housing.csv',
-                    header = TRUE)
+dataset <- dataset <- read.csv('./data/housing.csv', header = TRUE)
 
 # Define UI for application that draws a histogram
 fluidPage(
@@ -19,11 +18,14 @@ fluidPage(
           sidebarPanel(
             sliderInput("threshold_range", "Scope", 
                   #min = 0, max = max(dataset$households), value = c(0, max(dataset$households)),step = 1)
-                  min = 0, max = 500, value = c(0, 500),step = 1)
+                  min = 0, max = 2000, value = c(0, 2000),step = 1),
+            numericInput("start_value", "Start Intervall", 0),
+            numericInput("end_value", "End Intervall", 2000)
             ),
     mainPanel(
       plotOutput("gaussian_distribution_plot"),
-      verbatimTextOutput("summary_text")
+      verbatimTextOutput("summary_text"),
+      plotOutput("density")
          )
       )),
     # Tab 2
