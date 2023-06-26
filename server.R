@@ -66,7 +66,7 @@ function(input, output, session) {
   })
   #### end ####
   
-  #### distribution plot_1 ####  
+  #### distribution plot ####  
   # draw distribution zoomable plot
   output$distribution_plot <- renderPlotly({
     range_start <- input$threshold_range[1]
@@ -88,7 +88,7 @@ function(input, output, session) {
   })
   #### end ####
   
-  #### distribution plot_2 ####   
+  #### density plot ####   
   #draw distribution with adjustable intervals via slider input
   output$density <- renderPlotly({
     range_start <- input$threshold_range[1]
@@ -119,7 +119,8 @@ function(input, output, session) {
     filtered_data <- subset(housing, housing$households <= 2000)
     mean_value <- mean(filtered_data$households)
     sd_value <- sd(filtered_data$households)
-    error <- qnorm(1 - (1 - input$confidence) / 2) * sd(data) / sqrt(input$samplesize)
+    #error <- qnorm(1 - (1 - input$confidence) / 2) * sd(data) / sqrt(input$samplesize)
+    error <- qt((1 - (input$confidence)/2),input$samplesize-1)*sd_value / sqrt(input$samplesize)
     error_upper <- mean_value + error * sd_value
     error_lower <- mean_value - error * sd_value
     lower_bound <- mean_value - error
