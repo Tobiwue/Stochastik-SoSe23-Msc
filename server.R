@@ -120,8 +120,8 @@ function(input, output, session) {
     mean_value <- mean(filtered_data$households)
     sd_value <- sd(filtered_data$households)
     error <- qnorm(1 - (1 - input$confidence) / 2) * sd(data) / sqrt(input$samplesize)
-    error_upper <- mean_value + 1.96 * sd_value
-    error_lower <- mean_value - 1.96 * sd_value
+    error_upper <- mean_value + error * sd_value
+    error_lower <- mean_value - error * sd_value
     lower_bound <- mean_value - error
     upper_bound <- mean_value + error
     data.frame(x=1,mean_value = mean_value, upper = error_upper, lower = error_lower, lower_bound = lower_bound, upper_bound = upper_bound)
@@ -156,7 +156,6 @@ function(input, output, session) {
     current_x <<- current_x + 1
   }
   #### end ####
-  
   
   #### confidence plot ####
   createPlot <- function(data) {
