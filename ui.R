@@ -9,7 +9,7 @@ library(plotly)
 # read miete03 (provided by the lecturer and is unchanged)
 housing <- housing <- read.csv('./data/housing.csv', header = TRUE)
 
-# Define UI for application that draws a histogram
+#### UI ####
 fluidPage(
   tags$head(
     tags$style(
@@ -25,14 +25,31 @@ fluidPage(
   titlePanel("ShinyApp Stochastik SoSe23 - HTW Berlin FB4 MSC"),
   tabsetPanel(
     
-    # Info Tab
+    #### Info Tab ####
     tabPanel("Information",
-             mainPanel(
-               # Hauptinhalt für Tab 2
-             )
+             div(
+               style = "border: none; display: flex; align-items: center;",
+               img(src = 'HTW-Logo.jpg',
+                   height = "auto",
+                   style = "max-width: 100%;"),  # CSS-Stil für das Bild
+               mainPanel(
+                 h2("Herzlich willkommen zu unserer Shiny App!"),
+                 HTML("<h3>Diese Shiny App beinhaltet verschiedene Themen:</h3>
+                   <ul>
+                     <li>Eine interaktive Erforschung des Datensatzes</li>
+                     <li>Eine statische Analyse der Daten</li>
+                     <li>Berechnung diverser Werte durch Nutzereingabe</li>
+                     <li>Berechnung von Konfidenzintervallen anhand zweier Inputslider</li>
+                   </ul>",
+                     "<h4>Die Natur unserer App ist die Erkundung der Daten, daher können in
+                     Zukunft noch weitere Funktionen hinzugefügt werden.</h4>"
+                     )
+                )
+            )
     ),
-    #### Tab 1 - Confidence Interval ####
-    tabPanel("Confidence Interval",
+    #### end ####
+    #### Tab 2 - Confidence Interval ####
+    tabPanel("Exploration",
              sidebarLayout(
                sidebarPanel( id= 'sidebar',class='sidebar',
                  sliderInput("threshold_range", "Scope", 
@@ -52,3 +69,4 @@ fluidPage(
              ))
     #### end ####
   ))
+#### end ####

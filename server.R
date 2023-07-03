@@ -8,7 +8,9 @@ library(dplyr)
 # read california housing data
 housing <- read.csv('./data/housing.csv', header = TRUE)
 
-#### globalls ####
+
+
+#### globals ####
 #pos <- position_dodge2(.2)
 #### end ####
 
