@@ -77,11 +77,11 @@ function(input, output, session) {
     quantiles <- range_interval()$quantiles
     
     mean_sd_plot<-ggplot() +
-      geom_bar(data = filtered_data, aes(x = households), fill = "blue", color = "blue") +
+      geom_bar(data = filtered_data, aes(x = households), fill = "darkblue", color = "darkblue") +
       geom_vline(xintercept = range_start, linetype = "dotted", color = "brown", size = 1) +
       geom_vline(xintercept = range_end, linetype = "dotted", color = "brown", size = 1) +
       geom_vline(xintercept = quantiles[1:3], linetype = "dashed", color = "yellow", size = 1.5) +
-      geom_text(aes(x = quantiles[1:3], y = 0, label = c("Q1", "Median", "Q3")), color = "black") + 
+      geom_text(aes(x = quantiles[1:3], y = 0, label = c("Q1", "Median", "Q3")), color = "red") + 
       labs(x = "Values", y = "Frequency") +
       theme_minimal()
     ggplotly(mean_sd_plot)
@@ -89,45 +89,59 @@ function(input, output, session) {
   #### end ####
   
   #### density plot ####   
-  #draw distribution with adjustable intervals via slider input
   output$density <- renderPlotly({
     range_start <- input$threshold_range[1]
     range_end <- input$threshold_range[2]
     filtered_data <- subset(housing, housing$households <=2000 )
-    density_data <- density(filtered_data$households)
-    quantiles <- quantile(filtered_data$households, probs = c(0.25, 0.5, 0.75))
+    quantiles <- quantile(filtered_data$households, probs = c(.25, .5, .75))
+    mean_value <- round(mean(filtered_data$households),0)
     
     density_plot <- ggplot() +
       geom_vline(xintercept = range_start, linetype = "dashed", color = "green", size = 1.5) +
       geom_vline(xintercept = range_end, linetype = "dashed", color = "green", size = 1.5) +
+      geom_vline(xintercept = mean_value, linetype = "dotted", color = "black", size = 1.5) +
       geom_density(data = filtered_data, aes(x = households), fill = "lightblue", alpha = .5) +
       geom_vline(xintercept = quantiles[1:3], linetype = "dashed", color = "orange", size = 1) +
-      geom_text(aes(x = quantiles[1:3], y = 0, label = c("Q1", "Median", "Q3")), color = "black") + 
+      geom_text(aes(x = quantiles[1:3], y = 0, label = c("Q1", "Median", "Q3")), color = "black") +
+      geom_text(aes(x = mean_value, y = 0, label = "Mean"), color = "black", y= .0002) +
       
       labs(x = "Values", y = "Density") +
       theme_minimal()
     ggplotly(density_plot)
   })
   #### end ####
+
+  #### get sample as reactive function ####
+  sample_data <- reactive({
+    filtered_data <- subset(housing, housing$households <=2000 )
+    samples <- sample(filtered_data$households, size = input$samplesize)
+  })
+  #### end ####
   
   #### errorbar as reactive function ####
   error_bar_data <- reactiveValues(data = data.frame())
   calculate_error_bar <- reactive({
-    data <- rnorm(input$samplesize)
-    range_start <- 0
-    range_end <- 2000
-    filtered_data <- subset(housing, housing$households <= 2000)
-    mean_value <- mean(filtered_data$households)
-    sd_value <- sd(filtered_data$households)
-    #error <- qnorm(1 - (1 - input$confidence) / 2) * sd(data) / sqrt(input$samplesize)
-    error <- qt((1 - (input$confidence)/2),input$samplesize-1)*sd_value / sqrt(input$samplesize)
-    error_upper <- mean_value + error * sd_value
-    error_lower <- mean_value - error * sd_value
-    lower_bound <- mean_value - error
-    upper_bound <- mean_value + error
-    data.frame(x=1,mean_value = mean_value, upper = error_upper, lower = error_lower, lower_bound = lower_bound, upper_bound = upper_bound)
+    sample_mean <- mean(sample_data())
+    sample_sd <- sd(sample_data())
+    conf_int <- t.test(sample_data(), conf.level=input$confidence)$conf.int
+    upper_bound <- conf_int[2]
+    lower_bound <- conf_int[1]
+    error <- (upper_bound - lower_bound) / 2
+    
+    data.frame(x='Sample', mean_value = sample_mean, lower_bound = lower_bound, upper_bound = upper_bound)
   })
   #### end ####
+    
+    #data <- rnorm(input$samplesize)
+    #range_start <- 0
+    #range_end <- 2000
+    #error <- qt((1 - (input$confidence)/2),input$samplesize-1)*sd_value / sqrt(input$samplesize)
+    #error_upper <- mean_value + error * sd_value
+    #error_lower <- mean_value - error * sd_value
+    #lower_bound <- mean_value - error
+    #upper_bound <- mean_value + error
+  
+  
   
   #### observer logic for confidencePlot ####
   # observer resetButton
@@ -161,7 +175,7 @@ function(input, output, session) {
   #### confidence plot ####
   createPlot <- function(data) {
     confidencePlot <- ggplot(data, aes(x = x, y = mean_value)) +
-      geom_point(size = 3, aes(text = paste0("Mean: ", round(mean_value, 3), "<br>",
+      geom_point(size = 3, aes(text = paste(" Mean: ", round(mean_value, 3), "<br>",
                                              "Error: ", round(upper_bound - mean_value, 3), "<br>",
                                              "Lower Bound: ", round(lower_bound, 3), "<br>",
                                              "Upper Bound: ", round(upper_bound, 3)))) +
@@ -170,11 +184,9 @@ function(input, output, session) {
       #coord_flip() +
       labs(x = "", y = "") +
       theme_minimal()
-    ggplotly(confidencePlot)
+    ggplotly(confidencePlot, tooltip = "text")
   }
   #### end ####
-  
-  
   
 }
 
