@@ -7,7 +7,7 @@ library(plotly)
 
 
 # read miete03 (provided by the lecturer and is unchanged)
-housing <- housing <- read.csv('./data/housing.csv', header = TRUE)
+housing <- read.csv('C:/Users/kitch/Downloads/housing.csv', header = TRUE)
 
 #### UI ####
 fluidPage(
