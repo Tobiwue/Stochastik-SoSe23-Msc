@@ -6,7 +6,7 @@ library(plotly)
 library(dplyr)
 
 # read california housing data
-housing <- read.csv('./data/housing.csv', header = TRUE)
+housing <- read.csv('C:/Users/kitch/Downloads/housing.csv', header = TRUE)
 
 
 
@@ -79,11 +79,13 @@ function(input, output, session) {
     quantiles <- range_interval()$quantiles
     
     mean_sd_plot<-ggplot() +
-      geom_bar(data = filtered_data, aes(x = households), fill = "darkblue", color = "darkblue") +
-      geom_vline(xintercept = range_start, linetype = "dotted", color = "brown", size = 1) +
-      geom_vline(xintercept = range_end, linetype = "dotted", color = "brown", size = 1) +
-      geom_vline(xintercept = quantiles[1:3], linetype = "dashed", color = "yellow", size = 1.5) +
-      geom_text(aes(x = quantiles[1:3], y = 0, label = c("Q1", "Median", "Q3")), color = "red") + 
+      geom_bar(data = filtered_data, aes(x = households), fill = "#C8DAEA", color = "#C8DAEA") +
+      geom_vline(xintercept = range_start, linetype = "solid", color = "#a3a3a3", size = 0.5) +
+      geom_vline(xintercept = range_end, linetype = "solid", color = "#a3a3a3", size = 0.5) +
+      geom_vline(xintercept = mean_value, linetype = "solid", color = "#428bca", size = 0.5) +
+      geom_vline(xintercept = quantiles[1:3], linetype = "dashed", color = "#428bca", size = 0.5) +
+      geom_text(aes(x = quantiles[1:3], y = 0, label = c("Q1", "Q2", "Q3")), color = "black") + 
+      geom_text(aes(x = mean_value, y = 0, label = "Mean"), color = "black", y= 5) +
       labs(x = "Values", y = "Frequency") +
       theme_minimal()
     ggplotly(mean_sd_plot)
@@ -99,14 +101,13 @@ function(input, output, session) {
     mean_value <- round(mean(filtered_data$households),0)
     
     density_plot <- ggplot() +
-      geom_vline(xintercept = range_start, linetype = "dashed", color = "green", size = 1.5) +
-      geom_vline(xintercept = range_end, linetype = "dashed", color = "green", size = 1.5) +
-      geom_vline(xintercept = mean_value, linetype = "dotted", color = "black", size = 1.5) +
-      geom_density(data = filtered_data, aes(x = households), fill = "lightblue", alpha = .5) +
-      geom_vline(xintercept = quantiles[1:3], linetype = "dashed", color = "orange", size = 1) +
-      geom_text(aes(x = quantiles[1:3], y = 0, label = c("Q1", "Median", "Q3")), color = "black") +
-      geom_text(aes(x = mean_value, y = 0, label = "Mean"), color = "black", y= .0002) +
-      
+      geom_vline(xintercept = range_start, linetype = "solid", color = "#a3a3a3", size = 0.5) +
+      geom_vline(xintercept = range_end, linetype = "solid", color = "#a3a3a3", size = 0.5) +
+      geom_vline(xintercept = mean_value, linetype = "solid", color = "#428bca", size = 0.5) +
+      geom_density(data = filtered_data, aes(x = households), fill = "#C8DAEA", alpha = .5) +
+      geom_vline(xintercept = quantiles[1:3], linetype = "dashed", color = "#428bca", size = 0.5) +
+      geom_text(aes(x = quantiles[1:3], y = 0, label = c("Q1", "Q2", "Q3")), color = "black") +
+      geom_text(aes(x = mean_value, y = 0, label = "Mean"), color = "black", y= 0.00025) +
       labs(x = "Values", y = "Density") +
       theme_minimal()
     ggplotly(density_plot)
@@ -191,4 +192,3 @@ function(input, output, session) {
   #### end ####
   
 }
-
