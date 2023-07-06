@@ -36,6 +36,8 @@ fluidPage(
                <li>Calculation of various values by user input</li>
                <li>Calculation of confidence intervals using two input sliders</li>
                <li>Calculation of a Q-Q-Plot for columns selected by the user</li>
+               <li>A Shapiro–Wilk test for columns selected by the user</li>
+               
                     </ul>",
                     "<h4>The nature of our app is data exploration, so more features may be added in the future.</h4>"
                     )
@@ -103,5 +105,12 @@ fluidPage(
              )
     ),
     #### end ####
-  ))
+    #### Tab 5 Information ####
+    tabPanel("Information",
+               mainPanel('this'
+               )
+             )
+    )
+    #### end ####
+  )
 #### end ####
