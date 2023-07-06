@@ -6,7 +6,7 @@ library(plotly)
 library(dplyr)
 
 # read california housing data
-housing <- read.csv('C:/Users/kitch/Downloads/housing.csv', header = TRUE)
+housing <- read.csv('./data/housing.csv', header = TRUE)
 
 
 

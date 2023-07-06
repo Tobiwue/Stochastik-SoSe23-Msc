@@ -7,7 +7,7 @@ library(plotly)
 
 
 # read miete03 (provided by the lecturer and is unchanged)
-housing <- read.csv('C:/Users/kitch/Downloads/housing.csv', header = TRUE)
+housing <- read.csv('./data/housing.csv', header = TRUE)
 
 #### UI ####
 fluidPage(
@@ -22,7 +22,7 @@ fluidPage(
         ')
     )
   ),
-  titlePanel("ShinyApp Stochastik SoSe23 - HTW Berlin FB4 MSC"),
+  titlePanel(title = span(img(src = "HTW_Logo.jpg", height = 35), "ShinyApp Stochastik SoSe23 - HTW Berlin FB4 MSC")),
   tabsetPanel(
     
     #### Info Tab ####
@@ -31,7 +31,7 @@ fluidPage(
                style = "border: none; display: flex; align-items: center;",
                img(src = 'HTW-Logo.jpg',
                    height = "auto",
-                   style = "max-width: 100%;"),  # CSS-Stil für das Bild
+                   style = "max-width: 20%;"),  # CSS-Stil für das Bild
                mainPanel(
                  h2("Herzlich willkommen zu unserer Shiny App!"),
                  HTML("<h3>Diese Shiny App beinhaltet verschiedene Themen:</h3>
@@ -65,6 +65,22 @@ fluidPage(
                  verbatimTextOutput("summary_text"),
                  plotlyOutput("density"),
                  plotlyOutput("confidencePlot")
+               )
+             )
+    ),
+    #### end ####
+    #### Tab 3 - Hypothesentest ####
+    tabPanel("Hypothesentest",
+             sidebarLayout(
+               sidebarPanel( id= 'sidebar',class='sidebar',
+                             selectInput("Testseite", "Testseite:",
+                                         c("Linksseitiger Test" = "lt",
+                                           "Rechtsseitiger Test" = "rt",
+                                           "Zweiseitiger Test" = "zt")),
+               ),
+               mainPanel(
+                 plotlyOutput("hypothesentest_plot"),
+                 verbatimTextOutput("hypothesentest_text")
                )
              ))
     #### end ####
