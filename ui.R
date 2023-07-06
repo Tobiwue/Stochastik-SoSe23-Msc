@@ -27,26 +27,20 @@ fluidPage(
     
     #### Info Tab ####
     tabPanel("Information",
-             div(
-               style = "border: none; display: flex; align-items: center;",
-               img(src = 'HTW-Logo.jpg',
-                   height = "auto",
-                   style = "max-width: 20%;"),  # CSS-Stil für das Bild
-               mainPanel(
-                 h2("Herzlich willkommen zu unserer Shiny App!"),
-                 HTML("<h3>Diese Shiny App beinhaltet verschiedene Themen:</h3>
-                   <ul>
-                     <li>Eine interaktive Erforschung des Datensatzes</li>
-                     <li>Eine statische Analyse der Daten</li>
-                     <li>Berechnung diverser Werte durch Nutzereingabe</li>
-                     <li>Berechnung von Konfidenzintervallen anhand zweier Inputslider</li>
-                   </ul>",
-                     "<h4>Die Natur unserer App ist die Erkundung der Daten, daher können in
-                     Zukunft noch weitere Funktionen hinzugefügt werden.</h4>"
-                     )
-                )
-            )
-    ),
+             mainPanel(
+               h2("Herzlich willkommen zu unserer Shiny App!"),
+               HTML("<h3>Diese Shiny App beinhaltet verschiedene Themen:</h3>
+               <ul>
+               <li>Eine interaktive Erforschung des Datensatzes</li>
+               <li>Eine statische Analyse der Daten</li>
+               <li>Berechnung diverser Werte durch Nutzereingabe</li>
+               <li>Berechnung von Konfidenzintervallen anhand zweier Inputslider</li>
+                    </ul>",
+                    "<h4>Die Natur unserer App ist die Erkundung der Daten, daher können in
+                    Zukunft noch weitere Funktionen hinzugefügt werden.</h4>"
+                    )
+               )
+             ),
     #### end ####
     #### Tab 2 - Confidence Interval ####
     tabPanel("Exploration",
