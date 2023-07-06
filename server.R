@@ -8,14 +8,8 @@ library(dplyr)
 # read california housing data
 housing <- read.csv('./data/housing.csv', header = TRUE)
 
-
-
 #### globals ####
-#pos <- position_dodge2(.2)
 #### end ####
-
-# use to plot multy plots in one picture
-
 
 # Define server logic
 function(input, output, session) {
@@ -34,16 +28,16 @@ function(input, output, session) {
   
   #### distribution as reactive function ####
   # calc distribution as reactive function
-  calculate_normal <- reactive({
-    range_start <- input$threshold_range[1]
-    range_end <- input$threshold_range[2]
-    filtered_data <- subset(housing, housing$households >= range_start & housing$households <= range_end)
-    mean_value <- mean(filtered_data$households)
-    sd_value <- sd(filtered_data$households)
-    x <- seq(range_start, range_end, length.out = 100)
-    y <- dnorm(x, mean = mean_value, sd = sd_value)
-    data.frame(x = x, y = y)
-  })
+  #calculate_normal <- reactive({
+    #range_start <- input$threshold_range[1]
+    #range_end <- input$threshold_range[2]
+    #filtered_data <- subset(housing, housing$households >= range_start & housing$households <= range_end)
+    #mean_value <- mean(filtered_data$households)
+    #sd_value <- sd(filtered_data$households)
+    #x <- seq(range_start, range_end, length.out = 100)
+   # y <- dnorm(x, mean = mean_value, sd = sd_value)
+    #data.frame(x = x, y = y)
+ # })
   #### end ####
   
   #### metadata textbox ####
@@ -80,8 +74,8 @@ function(input, output, session) {
     
     mean_sd_plot<-ggplot() +
       geom_bar(data = filtered_data, aes(x = households), fill = "#C8DAEA", color = "#C8DAEA") +
-      geom_vline(xintercept = range_start, linetype = "solid", color = "#a3a3a3", size = 0.5) +
-      geom_vline(xintercept = range_end, linetype = "solid", color = "#a3a3a3", size = 0.5) +
+      geom_vline(xintercept = range_start, linetype = "solid", color = "green", size = 0.5) +
+      geom_vline(xintercept = range_end, linetype = "solid", color = "green", size = 0.5) +
       geom_vline(xintercept = mean_value, linetype = "solid", color = "#428bca", size = 0.5) +
       geom_vline(xintercept = quantiles[1:3], linetype = "dashed", color = "#428bca", size = 0.5) +
       geom_text(aes(x = quantiles[1:3], y = 0, label = c("Q1", "Q2", "Q3")), color = "black") + 
@@ -101,8 +95,8 @@ function(input, output, session) {
     mean_value <- round(mean(filtered_data$households),0)
     
     density_plot <- ggplot() +
-      geom_vline(xintercept = range_start, linetype = "solid", color = "#a3a3a3", size = 0.5) +
-      geom_vline(xintercept = range_end, linetype = "solid", color = "#a3a3a3", size = 0.5) +
+      geom_vline(xintercept = range_start, linetype = "solid", color = "green", size = 0.5) +
+      geom_vline(xintercept = range_end, linetype = "solid", color = "green", size = 0.5) +
       geom_vline(xintercept = mean_value, linetype = "solid", color = "#428bca", size = 0.5) +
       geom_density(data = filtered_data, aes(x = households), fill = "#C8DAEA", alpha = .5) +
       geom_vline(xintercept = quantiles[1:3], linetype = "dashed", color = "#428bca", size = 0.5) +
@@ -114,7 +108,7 @@ function(input, output, session) {
   })
   #### end ####
 
-  #### get sample as reactive function ####
+  #### get sample for interval as reactive function ####
   sample_data <- reactive({
     filtered_data <- subset(housing, housing$households <=2000 )
     samples <- sample(filtered_data$households, size = input$samplesize)
@@ -134,17 +128,6 @@ function(input, output, session) {
     data.frame(x='Sample', mean_value = sample_mean, lower_bound = lower_bound, upper_bound = upper_bound)
   })
   #### end ####
-    
-    #data <- rnorm(input$samplesize)
-    #range_start <- 0
-    #range_end <- 2000
-    #error <- qt((1 - (input$confidence)/2),input$samplesize-1)*sd_value / sqrt(input$samplesize)
-    #error_upper <- mean_value + error * sd_value
-    #error_lower <- mean_value - error * sd_value
-    #lower_bound <- mean_value - error
-    #upper_bound <- mean_value + error
-  
-  
   
   #### observer logic for confidencePlot ####
   # observer resetButton
@@ -191,4 +174,17 @@ function(input, output, session) {
   }
   #### end ####
   
+  #### qq plot ####
+  output$qqplot <- renderPlotly({
+    filtered_data <- lapply(housing, head, 2000)
+    qqdata <- as.data.frame(filtered_data[[input$column]])
+    
+    #draw qqplot
+    qqplot <- ggplot(qqdata, aes(sample = qqdata[, 1])) +
+      geom_qq() +
+      geom_qq_line() +
+      labs(title =input$column,x = "Theoretical quantiles", y = "Empirical quantiles")
+    ggplotly(qqplot)
+  })
+  #### end ####
 }

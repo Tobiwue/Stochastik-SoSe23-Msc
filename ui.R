@@ -76,7 +76,22 @@ fluidPage(
                  plotlyOutput("hypothesentest_plot"),
                  verbatimTextOutput("hypothesentest_text")
                )
-             ))
+             )
+            ),
+    #### end ####
+    
+    #### Tab 4 - Q-Q-Plot ####
+    tabPanel("Q-Q-Plot",
+             sidebarLayout(
+               sidebarPanel(
+                selectInput("column", label = "Choose Column", choices = colnames(housing))
+                            
+               ),
+               mainPanel(
+                 plotlyOutput("qqplot")
+               )
+             )
+    ),
     #### end ####
   ))
 #### end ####
