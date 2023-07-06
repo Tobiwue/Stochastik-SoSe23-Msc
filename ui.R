@@ -26,18 +26,18 @@ fluidPage(
   tabsetPanel(
     
     #### Info Tab ####
-    tabPanel("Information",
+    tabPanel("Welcome Page",
              mainPanel(
-               h2("Herzlich willkommen zu unserer Shiny App!"),
-               HTML("<h3>Diese Shiny App beinhaltet verschiedene Themen:</h3>
+               h2("Welcome to our Shiny App!"),
+               HTML("<h3>This Shiny App includes different topics:</h3>
                <ul>
-               <li>Eine interaktive Erforschung des Datensatzes</li>
-               <li>Eine statische Analyse der Daten</li>
-               <li>Berechnung diverser Werte durch Nutzereingabe</li>
-               <li>Berechnung von Konfidenzintervallen anhand zweier Inputslider</li>
+               <li>An interactive exploration of the dataset</li>
+               <li>A static analysis of the dataset</li>
+               <li>Calculation of various values by user input</li>
+               <li>Calculation of confidence intervals using two input sliders</li>
+               <li>Calculation of a Q-Q-Plot for columns selected by the user</li>
                     </ul>",
-                    "<h4>Die Natur unserer App ist die Erkundung der Daten, daher können in
-                    Zukunft noch weitere Funktionen hinzugefügt werden.</h4>"
+                    "<h4>The nature of our app is data exploration, so more features may be added in the future.</h4>"
                     )
                )
              ),
