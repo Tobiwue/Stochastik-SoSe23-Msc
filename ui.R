@@ -45,7 +45,7 @@ fluidPage(
     #### Tab 2 - Confidence Interval ####
     tabPanel("Exploration",
              sidebarLayout(
-               sidebarPanel( id= 'sidebar',class='sidebar',
+               sidebarPanel(id= 'sidebar',class='sidebar',
                  sliderInput("threshold_range", "Scope", 
                              #min = 0, max = max(housing$households), value = c(0, max(housing$households)),step = 1)
                              min = 0, max = 2000, value = c(0, 2000),step = 1),
@@ -66,12 +66,22 @@ fluidPage(
     #### Tab 3 - Hypothesentest ####
     tabPanel("Hypothesentest",
              sidebarLayout(
-               sidebarPanel( id= 'sidebar',class='sidebar',
+               sidebarPanel(id= 'sidebar',class='sidebar',
                              selectInput("Testseite", "Testseite:",
                                          c("Linksseitiger Test" = "lt",
                                            "Rechtsseitiger Test" = "rt",
-                                           "Zweiseitiger Test" = "zt")),
-               ),
+                                           "Zweiseitiger Test" = "zt")
+                                         ),
+                            fluidRow(
+                              div(style="display: inline-block", h5("H\u2080: \U0078\U0304 \u2264 ")),
+                              div(style="display: inline-block", textInput("h1", "", width = "50px"))
+                            ),
+                            
+                            fluidRow(
+                              div(style="display: inline-block", h5("H\u2081: \U0078\U0304 \u003e ")),
+                              div(style="display: inline-block", textInput("h1", "", width = "50px"))
+                            )
+                             ),
                mainPanel(
                  plotlyOutput("hypothesentest_plot"),
                  verbatimTextOutput("hypothesentest_text")
