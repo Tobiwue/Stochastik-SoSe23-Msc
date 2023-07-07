@@ -20,9 +20,9 @@ fluidPage(
             overflow-y: auto;
           }
         ')
-    )
+      )
   ),
-  titlePanel(title = span(img(src = "HTW_Logo.jpg", height = 35), "ShinyApp Stochastik SoSe23 - HTW Berlin FB4 MSC")),
+  titlePanel("ShinyApp Stochastik WI Msc SoSe23"),span(img(src = "HTW_Logo.jpg", height = 35)),
   tabsetPanel(
     
     #### Info Tab ####
@@ -107,6 +107,7 @@ fluidPage(
              )
     ),
     #### end ####
+    
     #### Tab 5 Information ####
     tabPanel("Information",
                mainPanel('this'
