@@ -96,11 +96,13 @@ fluidPage(
     tabPanel("Q-Q-Plot",
              sidebarLayout(
                sidebarPanel(
-                selectInput("column", label = "Choose Column", choices = colnames(housing))
+                selectInput("column", label = "Choose Column", choices = colnames(housing)),
+                sliderInput("qq_samplesize", label = "Sample Size for Shapiro-Wilk normality test", 3, 2000, 3)
                             
                ),
                mainPanel(
-                 plotlyOutput("qqplot")
+                 plotlyOutput("qqplot"),
+                 verbatimTextOutput("shapirotest")
                )
              )
     ),

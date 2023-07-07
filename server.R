@@ -178,13 +178,34 @@ function(input, output, session) {
   output$qqplot <- renderPlotly({
     filtered_data <- lapply(housing, head, 2000)
     qqdata <- as.data.frame(filtered_data[[input$column]])
-    
+
     #draw qqplot
-    qqplot <- ggplot(qqdata, aes(sample = qqdata[, 1])) +
-      geom_qq() +
+    qqplot <- ggplot(qqdata, aes(sample = qqdata[, 1])) +geom_qq() +
       geom_qq_line() +
       labs(title =input$column,x = "Theoretical quantiles", y = "Empirical quantiles")
     ggplotly(qqplot)
   })
+  #### end ####
+  
+  #### shapiro test ####
+  output$shapirotest <- renderText({
+    filtered_data <- lapply(housing, head, 2000)
+    qqdata <- as.data.frame(filtered_data[[input$column]])
+    
+    sample_size <- input$qq_samplesize
+    sample_data <- head(qqdata, min(sample_size, nrow(qqdata)))
+    
+    # Shapiro-Wilk-Test durchführen
+    result <- shapiro.test(sample_data[, 1])
+    
+    # Ergebnis anzeigen
+    paste(
+      result$method, ":\n",
+      sprintf("W-Value: %.4f\n", result$statistic),
+      paste("P-Value:",result$p.value)
+    )
+          
+    })
+  
   #### end ####
 }
