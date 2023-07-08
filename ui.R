@@ -25,7 +25,7 @@ fluidPage(
   titlePanel("ShinyApp Stochastik WI Msc SoSe23"),span(img(src = "HTW_Logo.jpg", height = 35)),
   tabsetPanel(
     
-    #### Info Tab ####
+    #### Tab 1 - Info ####
     tabPanel("Welcome Page",
              mainPanel(
                h2("Welcome to our Shiny App!"),
@@ -44,6 +44,7 @@ fluidPage(
                )
              ),
     #### end ####
+    
     #### Tab 2 - Confidence Interval ####
     tabPanel("Exploration",
              sidebarLayout(
@@ -65,7 +66,8 @@ fluidPage(
              )
     ),
     #### end ####
-    #### Tab 3 - Hypothesentest ####
+    
+    #### Tab 3 - Hypothesis Test ####
     tabPanel("Hypothesentest",
              sidebarLayout(
                sidebarPanel(id= 'sidebar',class='sidebar',
@@ -108,12 +110,30 @@ fluidPage(
     ),
     #### end ####
     
-    #### Tab 5 Information ####
+    #### Tab 5 - Information ####
     tabPanel("Information",
-               mainPanel('this'
+               mainPanel(
+                 HTML("<h3>Group Members</h3>
+                  <ul>
+                    <li>Alice Kitchkin</li>
+                    <li>Jan Lüken</li>
+                    <li>Tobia Wübben</li>
+                  </ul>",
+                      "<h3>Sources</h3>",
+                  "<ul>
+                    <li><a>https://www.kaggle.com/datasets/darshanprabhu09/california-housing-dataset</a></li>
+                    <li><a>https://de.wikibooks.org/wiki/GNU_R:_shapiro.test</a></li>
+                    <li><a>https://rpubs.com/stammler/851041</a></li>
+                    <li><a>https://plotly.com/ggplot2/getting-started/</a></li>
+                    <li><a>https://www.r-bloggers.com/2021/06/qq-plots-in-r-quantile-quantile-plots-quick-start-guide/</a></li>
+                    <li><a>https://de.wikipedia.org/wiki/Shapiro-Wilk-Test</a></li>
+                    <li><a>https://shiny.posit.co/r/articles/build/html-tags/</a></li>
+                  </ul>"
+                  )#<li><a></a></li>
                )
              )
-    )
     #### end ####
+    )
+    
   )
 #### end ####
