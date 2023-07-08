@@ -22,7 +22,7 @@ fluidPage(
         ')
       )
   ),
-  titlePanel("ShinyApp Stochastik WI Msc SoSe23"),span(img(src = "HTW_Logo.jpg", height = 35)),
+  titlePanel("ShinyApp Stochastik WI MSc SoSe23"),span(img(src = "HTW_Logo.jpg", height = 35)),
   tabsetPanel(
     
     #### Tab 1 - Welcome Page ####
