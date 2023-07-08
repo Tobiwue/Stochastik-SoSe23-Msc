@@ -25,7 +25,7 @@ fluidPage(
   titlePanel("ShinyApp Stochastik WI Msc SoSe23"),span(img(src = "HTW_Logo.jpg", height = 35)),
   tabsetPanel(
     
-    #### Tab 1 - Info ####
+    #### Tab 1 - Welcome Page ####
     tabPanel("Welcome Page",
              mainPanel(
                h2("Welcome to our Shiny App!"),
