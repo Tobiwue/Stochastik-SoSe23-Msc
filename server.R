@@ -191,4 +191,59 @@ function(input, output, session) {
   }
   #### end ####
   
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  #### Hypothesentest Berechnungen ####
+  data <- reactive({
+    scope_start <- input$hypo_range[1]
+    scope_end <- input$hypo_range[2]
+    filtered_data <- subset(housing, housing$households >= scope_start & housing$households <= scope_end)
+    h0_value <- input$h0_grenze
+    sd_value <- sd(filtered_data$households)
+  })
+
+  t_test_calc <- reactive({  
+    t_test <- t.test(filtered_data, alternative = "two.sided", conf.level = input$alpha)
+    p <- t_test$p.value
+    conf_int <- t_test$conf.int
+  })
+  #### end ####
+  
+  output$h1_grenze <- renderText({ input$h0_grenze })
+  
+  #### Hyppothesentest plot ####
+  output$hypothesentest_plot <- renderPlotly({
+    scope_start <- input$hypo_range[1]
+    scope_end <- input$hypo_range[2]
+    filtered_data <- subset(housing, housing$households >= scope_start & housing$households <= scope_end)
+    h0_value <- input$h0_grenze
+    sd_value <- sd(filtered_data$households)
+    t_test <- t.test(filtered_data, alternative = "two.sided", conf.level = input$alpha)
+    p <- t_test$p.value
+    conf_int <- t_test$conf.int
+    
+    mean_sd_plot<-ggplot() +
+      geom_bar(data = filtered_data, aes(x = households), fill = "#C8DAEA", color = "#C8DAEA") +
+      geom_vline(xintercept = scope_start, linetype = "solid", color = "#a3a3a3", size = 0.5) +
+      geom_vline(xintercept = scope_end, linetype = "solid", color = "#a3a3a3", size = 0.5) +
+      geom_vline(xintercept = h0_value, linetype = "solid", color = "#428bca", size = 0.5) +
+      geom_vline(xintercept = conf_int, linetype = "dashed", color = "#428bca", size = 0.5) +
+      geom_text(aes(x = conf_int, y = 0, label = c("a/2", "1-(a/2)")), color = "black") + 
+      geom_text(aes(x = h0_value, y = 0, label = "H0 Grenze"), color = "black", y= 5) +
+      labs(x = "Values", y = "Frequency") +
+      theme_minimal()
+    ggplotly(mean_sd_plot)
+  })
+  #### end ####
 }
