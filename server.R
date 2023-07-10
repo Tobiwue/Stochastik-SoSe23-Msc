@@ -78,8 +78,8 @@ function(input, output, session) {
       geom_vline(xintercept = range_end, linetype = "solid", color = "#192A51", size = 0.5) +
       geom_vline(xintercept = mean_value, linetype = "solid", color = "#428bca", size = 0.5) +
       geom_vline(xintercept = quantiles[1:3], linetype = "dashed", color = "#428bca", size = 0.5) +
-      geom_text(aes(x = quantiles[1:3], y = 0, label = c("Q1", "Q2", "Q3")), color = "black") + 
-      geom_text(aes(x = mean_value, y = 0, label = "Mean"), color = "black", y= 5) +
+      geom_text(aes(x = quantiles[1:3], y = 0, label = c("Q1", "Q2", "Q3")), color = "black", y=5) + 
+      geom_text(aes(x = mean_value, y = 0, label = "Mean"), color = "black", y=10) +
       labs(x = "Values", y = "Frequency") +
       theme_minimal()
     ggplotly(mean_sd_plot)
@@ -100,8 +100,8 @@ function(input, output, session) {
       geom_vline(xintercept = mean_value, linetype = "solid", color = "#428bca", size = 0.5) +
       geom_density(data = filtered_data, aes(x = households), fill = "#C8DAEA", alpha = .5) +
       geom_vline(xintercept = quantiles[1:3], linetype = "dashed", color = "#428bca", size = 0.5) +
-      geom_text(aes(x = quantiles[1:3], y = 0, label = c("Q1", "Q2", "Q3")), color = "black") +
-      geom_text(aes(x = mean_value, y = 0, label = "Mean"), color = "black", y= 0.00025) +
+      geom_text(aes(x = quantiles[1:3], y = 0, label = c("Q1", "Q2", "Q3")), color = "black", y=0.00025) +
+      geom_text(aes(x = mean_value, y = 0, label = "Mean"), color = "black", y= 0.0005) +
       labs(x = "Values", y = "Density") +
       theme_minimal()
     ggplotly(density_plot)
@@ -219,7 +219,34 @@ function(input, output, session) {
   
   
   output$h1_grenze <- renderText({ input$h0_grenze })
-  
+
+  #### Hypothesentest Auswertung ####
+  output$ttest <- renderText({
+    t_test <- t_test_r()
+    data <- data_r()
+    p_value <- round(t_test$p.value, 5)
+    conf_int1 <- round(t_test$conf.int[1], 0)
+    conf_int2 <- round(t_test$conf.int[2], 0)
+    mean <- round(mean(data$households), 2)
+    conf_niveau <- 1.0-input$alpha
+    alternative <- t_test$alternative
+    
+    if(p_value < conf_niveau) {
+      result <- paste("not be rejected. The Results are statistically significant, because p-value <", conf_niveau)
+    }
+    else if (p_value > conf_niveau | p_value == conf_niveau) {
+      result <- paste("be rejected. The Results are not statistically significant, because p-value >=", conf_niveau)
+    }
+    
+  paste(" p-value: ", p_value, "\n", 
+        input$alpha, " percent confidence interval: ", conf_int1, " - ", conf_int2, "\n", 
+        "Mean of x: ", mean, "\n",
+        "Alternative: ", alternative, "\n",
+        " \n",
+        "The Null Hypothesis will ", result
+        )
+  })
+  #### end ####
   
   
   #### Dataset updated as reactive ####
@@ -234,31 +261,62 @@ function(input, output, session) {
     data <- data_r()
     data <- data$households
     
-    if (input$hypothesis_test == "Left-tailed") {type <- "less"}
-    else if (input$hypothesis_test == "Right-tailed") {type <- "greater"}
-    else {type <- "two.sided"}
+    if (input$hypothesis_test == "lt") {
+      type <- "less"
+    } else if (input$hypothesis_test == "rt") {
+      type <- "greater"
+    } else {
+      type <- "two.sided"
+    }
+    
     t_test <- t.test(data, mu = input$h0_grenze, alternative = type, conf.level = input$alpha)
   })
   #### end ####
   
-  output$ttest <- renderText({ paste(t_test_r()) })
+  
+  #### Ein-/Ausblenden von Linien im Plot ####
+  v_lines_r <- reactive({
+    if (input$hypothesis_test == "lt") {
+      s_a2 <- 0
+      s_1a2 <- 0.5
+      l_a2 <- ""
+      l_1a2 <- "α/2"
+    } else if (input$hypothesis_test == "rt") {
+      s_a2 <- 0.5
+      s_1a2 <- 0
+      l_a2 <- "1-(α/2)"
+      l_1a2 <- ""
+    } else {
+      s_a2 <- 0.5
+      s_1a2 <- 0.5
+      l_a2 <- "α/2"
+      l_1a2 <- "1-(α/2)"
+    }
+
+    combo <- list(s_a2=s_a2, s_1a2=s_1a2, l_a2=l_a2, l_1a2=l_1a2)
+    
+    return(combo)
+  })
+  #### end ####
   
   
   #### Hyppothesentest plot ####
   output$hypothesentest_plot <- renderPlotly({
     data <- data_r()
     data <- data$households
-    
     t_test <- t_test_r()
+    v_lines <- v_lines_r()
     
     hypo_plot <- ggplot() +
       geom_bar(data = data_r(), aes(x = households), fill = "#C8DAEA", color = "#C8DAEA") +
       geom_vline(xintercept = input$hypo_range[1], linetype = "solid", color = "#192A51", size = 0.5) +
       geom_vline(xintercept = input$hypo_range[2], linetype = "solid", color = "#192A51", size = 0.5) +
       geom_vline(xintercept = input$h0_grenze, linetype = "solid", color = "#428bca", size = 0.5) +
-      geom_vline(xintercept = t_test$conf.int, linetype = "dashed", color = "#428bca", size = 0.5) +
-      geom_text(aes(x = t_test$conf.int, y = 0, label = c("a/2", "1-(a/2)")), color = "black") + 
-      geom_text(aes(x = input$h0_grenze, y = 0, label = "H0 Grenze"), color = "black", y= 5) +
+      geom_vline(xintercept = t_test$conf.int[1], linetype = "dashed", color = "#428bca", size = v_lines$s_a2) +
+      geom_vline(xintercept = t_test$conf.int[2], linetype = "dashed", color = "#428bca", size = v_lines$s_1a2) +
+      geom_text(aes(x = t_test$conf.int[1], y = 0, label = v_lines$l_a2), color = "black", y=5) + 
+      geom_text(aes(x = t_test$conf.int[2], y = 0, label = v_lines$l_1a2), color = "black", y=2.5) + 
+      geom_text(aes(x = input$h0_grenze, y = 0, label = "H0 Grenze"), color = "black", y=10) +
       labs(x = "Values", y = "Frequency") +
       theme_minimal()
     ggplotly(hypo_plot)
