@@ -132,7 +132,7 @@ fluidPage(
                   </ul>",
                     "<h3>Sources</h3>",
                     "<ul>
-                    <li><a>https://www.kaggle.com/datasets/darshanprabhu09/california-housing-dataset</a></li>
+                    <li><a>https://github.com/ageron/handson-ml/tree/master/datasets/housing</a></li>
                     <li><a>https://de.wikibooks.org/wiki/GNU_R:_shapiro.test</a></li>
                     <li><a>https://rpubs.com/stammler/851041</a></li>
                     <li><a>https://plotly.com/ggplot2/getting-started/</a></li>
