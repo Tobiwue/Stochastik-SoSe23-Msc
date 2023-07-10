@@ -75,7 +75,7 @@ fluidPage(
                                         #min = 0, max = max(housing$households), value = c(0, max(housing$households)),step = 1)
                                         min = 0, max = 2000, value = c(0, 2000),step = 1),
                             
-                            selectInput("Hypothesis test", "Testtype:",
+                            selectInput("hypothesis_test", "Hypothesis test:",
                                         c("Left-tailed" = "lt",
                                           "Right-tailed" = "rt",
                                           "Two-tailed" = "zt")

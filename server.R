@@ -233,7 +233,11 @@ function(input, output, session) {
   t_test_r <- reactive({  
     data <- data_r()
     data <- data$households
-    t_test <- t.test(data, mu = input$h0_grenze, alternative = "two.sided", conf.level = input$alpha)
+    
+    if (input$hypothesis_test == "Left-tailed") {type <- "less"}
+    else if (input$hypothesis_test == "Right-tailed") {type <- "greater"}
+    else {type <- "two.sided"}
+    t_test <- t.test(data, mu = input$h0_grenze, alternative = type, conf.level = input$alpha)
   })
   #### end ####
   
