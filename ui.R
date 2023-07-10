@@ -66,25 +66,29 @@ fluidPage(
     #### Tab 3 - Hypothesentest ####
     tabPanel("Hypothesentest",
              sidebarLayout(
-               sidebarPanel(id= 'sidebar',class='sidebar',
-                             selectInput("Testseite", "Testseite:",
-                                         c("Linksseitiger Test" = "lt",
-                                           "Rechtsseitiger Test" = "rt",
-                                           "Zweiseitiger Test" = "zt")
-                                         ),
+               sidebarPanel(id = 'sidebar', class ='sidebar',
+                            sliderInput("hypo_range", "Scope", 
+                                        #min = 0, max = max(housing$households), value = c(0, max(housing$households)),step = 1)
+                                        min = 0, max = 2000, value = c(0, 2000),step = 1),
+                            
+                            selectInput("Testtype", "Testtype:",
+                                        c("Leftsided test" = "lt",
+                                          "Rightsided test" = "rt",
+                                          "Twosided test" = "zt")
+                                        ),
                             fluidRow(
                               div(style="display: inline-block", h5("H\u2080: \U0078\U0304 \u2264 ")),
-                              div(style="display: inline-block", textInput("h1", "", width = "50px"))
+                              div(style="display: inline-block", numericInput("h0_grenze", "", value=300, min = 0, width = "80px"))
                             ),
-                            
                             fluidRow(
                               div(style="display: inline-block", h5("H\u2081: \U0078\U0304 \u003e ")),
-                              div(style="display: inline-block", textInput("h1", "", width = "50px"))
-                            )
-                             ),
+                              div(style="display: inline-block", textOutput("h1_grenze"),)
+                            ),
+                            sliderInput("alpha", "Confidence Level", .9, .99, .9, step = 0.01)
+                            ),
                mainPanel(
                  plotlyOutput("hypothesentest_plot"),
-                 verbatimTextOutput("hypothesentest_text")
+                 verbatimTextOutput("ttest")
                )
              ))
     #### end ####
