@@ -82,33 +82,21 @@ fluidPage(
                                           "Right-tailed" = "rt",
                                           "Two-tailed" = "zt")
                             ),
+                            
                             fluidRow(
-                              div(
-                                style = "display: flex; flex-direction: column;",
-                                h4(style = "padding-left: 15px;; font-weight: bold; font-size: 14px;margin-bottom: 0px;margin-top: 20px;","Hypothesis"),
-                                div(
-                                  style = "width: 100%;",
-                                  div(
-                                    style = "display: flex; align-items: center;",
-                                    h5(style = "padding-left: 15px;", "H₀: x̄ ≤"),
-                                    div(style = "margin-left: 10px;",
-                                      numericInput("h0_grenze", "", value = 460, min = 0, width = "80px")
-                                    )
-                                  ),
-                                  div(
-                                    style = "display: flex; align-items: center;",
-                                    h5(style = "padding-left: 15px;","H₁: x̄ >"),
-                                    div(style = "margin-left: 10px;",
-                                      textOutput("h1_grenze")
-                                    )
-                                  )
-                                )
-                              )
-                            ),
-                           div(
-                             style = "margin-top: 25px;",
-                             sliderInput("alpha", "Confidence Level", .9, .99, .9, step = 0.01)
-                           )
+                              div(style = "display: flex; flex-direction: column;",
+                                  h4(style = "padding-left: 15px;; font-weight: bold; font-size: 14px;margin-bottom: 0px;margin-top: 20px;","Hypothesis"),
+                                  div(style = "width: 100%;",
+                                      div(style = "display: flex; align-items: center;",
+                                          h5(style = "padding-left: 15px;", "H₀: x̄ ≤"),
+                                          div(style = "margin-left: 10px;",
+                                              numericInput("h0_grenze", "", value = 460, min = 0, width = "80px"))),
+                                      div(style = "display: flex; align-items: center;",
+                                          h5(style = "padding-left: 15px;","H₁: x̄ >"),
+                                          div(style = "margin-left: 10px;",
+                                              textOutput("h1_grenze")))))),
+                            
+                            div(style = "margin-top: 25px;", sliderInput("alpha", "Confidence Level", .9, .99, .9, step = 0.01))
                ),
                mainPanel(
                  plotlyOutput("hypothesentest_plot"),

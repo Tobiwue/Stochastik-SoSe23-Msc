@@ -316,7 +316,7 @@ function(input, output, session) {
       geom_vline(xintercept = t_test$conf.int[2], linetype = "dashed", color = "#428bca", size = v_lines$s_1a2) +
       geom_text(aes(x = t_test$conf.int[1], y = 0, label = v_lines$l_a2), color = "black", y=5) + 
       geom_text(aes(x = t_test$conf.int[2], y = 0, label = v_lines$l_1a2), color = "black", y=2.5) + 
-      geom_text(aes(x = input$h0_grenze, y = 0, label = "H0 Grenze"), color = "black", y=10) +
+      geom_text(aes(x = input$h0_grenze, y = 0, label = "H0"), color = "black", y=10) +
       labs(x = "Values", y = "Frequency") +
       theme_minimal()
     ggplotly(hypo_plot)
