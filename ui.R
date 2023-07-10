@@ -20,7 +20,7 @@ fluidPage(
             overflow-y: auto;
           }
         ')
-      )
+    )
   ),
   titlePanel("ShinyApp Stochastik WI MSc SoSe23"),span(img(src = "HTW_Logo.jpg", height = 35)),
   tabsetPanel(
@@ -40,22 +40,22 @@ fluidPage(
                
                     </ul>",
                     "<h4>The nature of our app is data exploration, so more features may be added in the future.</h4>"
-                    )
                )
-             ),
+             )
+    ),
     #### end ####
     
     #### Tab 2 - Confidence Interval ####
     tabPanel("Exploration",
              sidebarLayout(
                sidebarPanel(id= 'sidebar',class='sidebar',
-                 sliderInput("threshold_range", "Scope", 
-                             #min = 0, max = max(housing$households), value = c(0, max(housing$households)),step = 1)
-                             min = 0, max = 2000, value = c(0, 2000),step = 1),
-                 sliderInput("samplesize", "Sample Size", 10, 50, 10),
-                 sliderInput("confidence", "Confidence Level", .9, .99, .9, step = 0.01),
-                 actionButton("addButton", "Add Conf.Plot"),
-                 actionButton("resetButton", "Reset Conf.Plot")
+                            sliderInput("threshold_range", "Scope", 
+                                        #min = 0, max = max(housing$households), value = c(0, max(housing$households)),step = 1)
+                                        min = 0, max = 2000, value = c(0, 2000),step = 1),
+                            sliderInput("samplesize", "Sample Size", 10, 50, 10),
+                            sliderInput("confidence", "Confidence Level", .9, .99, .9, step = 0.01),
+                            actionButton("addButton", "Add Conf.Plot"),
+                            actionButton("resetButton", "Reset Conf.Plot")
                ),
                mainPanel(
                  plotlyOutput("distribution_plot"),
@@ -67,40 +67,43 @@ fluidPage(
     ),
     #### end ####
     
-    #### Tab 3 - Hypothesis Test ####
+    #### Tab 3 - Hypothesentest ####
     tabPanel("Hypothesentest",
              sidebarLayout(
-               sidebarPanel(id= 'sidebar',class='sidebar',
-                             selectInput("Testseite", "Testseite:",
-                                         c("Linksseitiger Test" = "lt",
-                                           "Rechtsseitiger Test" = "rt",
-                                           "Zweiseitiger Test" = "zt")
-                                         ),
+               sidebarPanel(id = 'sidebar', class ='sidebar',
+                            sliderInput("hypo_range", "Scope", 
+                                        #min = 0, max = max(housing$households), value = c(0, max(housing$households)),step = 1)
+                                        min = 0, max = 2000, value = c(0, 2000),step = 1),
+                            
+                            selectInput("Testtype", "Testtype:",
+                                        c("Leftsided test" = "lt",
+                                          "Rightsided test" = "rt",
+                                          "Twosided test" = "zt")
+                            ),
                             fluidRow(
                               div(style="display: inline-block", h5("H\u2080: \U0078\U0304 \u2264 ")),
-                              div(style="display: inline-block", textInput("h1", "", width = "50px"))
+                              div(style="display: inline-block", numericInput("h0_grenze", "", value=300, min = 0, width = "80px"))
                             ),
-                            
                             fluidRow(
                               div(style="display: inline-block", h5("H\u2081: \U0078\U0304 \u003e ")),
-                              div(style="display: inline-block", textInput("h1", "", width = "50px"))
-                            )
-                             ),
+                              div(style="display: inline-block", textOutput("h1_grenze"),)
+                            ),
+                            sliderInput("alpha", "Confidence Level", .9, .99, .9, step = 0.01)
+               ),
                mainPanel(
                  plotlyOutput("hypothesentest_plot"),
-                 verbatimTextOutput("hypothesentest_text")
+                 verbatimTextOutput("ttest")
                )
-             )
-            ),
+             )),
     #### end ####
     
     #### Tab 4 - Q-Q-Plot ####
     tabPanel("Q-Q-Plot",
              sidebarLayout(
                sidebarPanel(
-                selectInput("column", label = "Choose Column", choices = colnames(housing)),
-                sliderInput("qq_samplesize", label = "Sample Size for Shapiro-Wilk normality test", 3, 2000, 3)
-                            
+                 selectInput("column", label = "Choose Column", choices = colnames(housing)),
+                 sliderInput("qq_samplesize", label = "Sample Size for Shapiro-Wilk normality test", 3, 2000, 3)
+                 
                ),
                mainPanel(
                  plotlyOutput("qqplot"),
@@ -112,15 +115,15 @@ fluidPage(
     
     #### Tab 5 - Information ####
     tabPanel("Information",
-               mainPanel(
-                 HTML("<h3>Group Members</h3>
+             mainPanel(
+               HTML("<h3>Group Members</h3>
                   <ul>
                     <li>Alice Kitchkin</li>
                     <li>Jan Lüken</li>
                     <li>Tobia Wübben</li>
                   </ul>",
-                      "<h3>Sources</h3>",
-                  "<ul>
+                    "<h3>Sources</h3>",
+                    "<ul>
                     <li><a>https://www.kaggle.com/datasets/darshanprabhu09/california-housing-dataset</a></li>
                     <li><a>https://de.wikibooks.org/wiki/GNU_R:_shapiro.test</a></li>
                     <li><a>https://rpubs.com/stammler/851041</a></li>
@@ -129,11 +132,11 @@ fluidPage(
                     <li><a>https://de.wikipedia.org/wiki/Shapiro-Wilk-Test</a></li>
                     <li><a>https://shiny.posit.co/r/articles/build/html-tags/</a></li>
                   </ul>"
-                  )#<li><a></a></li>
-               )
+               )#<li><a></a></li>
              )
-    #### end ####
     )
-    
+    #### end ####
   )
+  
+)
 #### end ####
