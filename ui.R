@@ -68,8 +68,8 @@ fluidPage(
     #### end ####
     
 
-    #### Tab 3 - Hypothesis testing ####
-    tabPanel("Hypothesis testing",
+    #### Tab 3 - Hypothesis Test ####
+    tabPanel("Hypothesis Test",
 
              sidebarLayout(
                sidebarPanel(
@@ -92,7 +92,7 @@ fluidPage(
                                     style = "display: flex; align-items: center;",
                                     h5(style = "padding-left: 15px;", "H₀: x̄ ≤"),
                                     div(style = "margin-left: 10px;",
-                                      numericInput("h0_grenze", "", value = 300, min = 0, width = "80px")
+                                      numericInput("h0_grenze", "", value = 460, min = 0, width = "80px")
                                     )
                                   ),
                                   div(
