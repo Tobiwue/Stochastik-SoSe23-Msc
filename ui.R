@@ -68,9 +68,6 @@ fluidPage(
     #### end ####
     
 
-    #### Tab 3 - Hypothesentest ####
-    tabPanel("Typothesis Test",
-
     #### Tab 3 - Hypothesis testing ####
     tabPanel("Hypothesis testing",
 
