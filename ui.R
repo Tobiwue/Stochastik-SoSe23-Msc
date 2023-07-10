@@ -68,9 +68,9 @@ fluidPage(
     #### end ####
     
     #### Tab 3 - Hypothesentest ####
-    tabPanel("Hypothesentest",
+    tabPanel("Typothesis Test",
              sidebarLayout(
-               sidebarPanel(id = 'sidebar', class ='sidebar',
+               sidebarPanel(
                             sliderInput("hypo_range", "Scope", 
                                         #min = 0, max = max(housing$households), value = c(0, max(housing$households)),step = 1)
                                         min = 0, max = 2000, value = c(0, 2000),step = 1),
@@ -81,14 +81,32 @@ fluidPage(
                                           "Twosided test" = "zt")
                             ),
                             fluidRow(
-                              div(style="display: inline-block", h5("H\u2080: \U0078\U0304 \u2264 ")),
-                              div(style="display: inline-block", numericInput("h0_grenze", "", value=300, min = 0, width = "80px"))
+                              div(
+                                style = "display: flex; flex-direction: column;",
+                                h4(style = "padding-left: 15px;; font-weight: bold; font-size: 14px;margin-bottom: 0px;margin-top: 20px;","Hypothesis"),
+                                div(
+                                  style = "width: 100%;",
+                                  div(
+                                    style = "display: flex; align-items: center;",
+                                    h5(style = "padding-left: 15px;", "H₀: x̄ ≤"),
+                                    div(style = "margin-left: 10px;",
+                                      numericInput("h0_grenze", "", value = 300, min = 0, width = "80px")
+                                    )
+                                  ),
+                                  div(
+                                    style = "display: flex; align-items: center;",
+                                    h5(style = "padding-left: 15px;","H₁: x̄ >"),
+                                    div(style = "margin-left: 10px;",
+                                      textOutput("h1_grenze")
+                                    )
+                                  )
+                                )
+                              )
                             ),
-                            fluidRow(
-                              div(style="display: inline-block", h5("H\u2081: \U0078\U0304 \u003e ")),
-                              div(style="display: inline-block", textOutput("h1_grenze"),)
-                            ),
-                            sliderInput("alpha", "Confidence Level", .9, .99, .9, step = 0.01)
+                           div(
+                             style = "margin-top: 25px;",
+                             sliderInput("alpha", "Confidence Level", .9, .99, .9, step = 0.01)
+                           )
                ),
                mainPanel(
                  plotlyOutput("hypothesentest_plot"),
