@@ -232,10 +232,10 @@ function(input, output, session) {
     alternative <- t_test$alternative
     
     if(p_value < conf_niveau) {
-      result <- paste("not be rejected. The Results are statistically significant, because p-value <", conf_niveau)
+      result <- paste("be rejected. \n The Results are statistically significant (= not random), because p-value =", p_value, " < ", conf_niveau)
     }
     else if (p_value > conf_niveau | p_value == conf_niveau) {
-      result <- paste("be rejected. The Results are not statistically significant, because p-value >=", conf_niveau)
+      result <- paste("not be rejected.\n The Results are not statistically significant (= random), because p-value =", p_value, " >= ", conf_niveau)
     }
     
   paste(" p-value: ", p_value, "\n", 
