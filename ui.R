@@ -67,18 +67,18 @@ fluidPage(
     ),
     #### end ####
     
-    #### Tab 3 - Hypothesentest ####
-    tabPanel("Hypothesentest",
+    #### Tab 3 - Hypothesis testing ####
+    tabPanel("Hypothesis testing",
              sidebarLayout(
                sidebarPanel(id = 'sidebar', class ='sidebar',
                             sliderInput("hypo_range", "Scope", 
                                         #min = 0, max = max(housing$households), value = c(0, max(housing$households)),step = 1)
                                         min = 0, max = 2000, value = c(0, 2000),step = 1),
                             
-                            selectInput("Testtype", "Testtype:",
-                                        c("Leftsided test" = "lt",
-                                          "Rightsided test" = "rt",
-                                          "Twosided test" = "zt")
+                            selectInput("Hypothesis test", "Testtype:",
+                                        c("Left-tailed" = "lt",
+                                          "Right-tailed" = "rt",
+                                          "Two-tailed" = "zt")
                             ),
                             fluidRow(
                               div(style="display: inline-block", h5("H\u2080: \U0078\U0304 \u2264 ")),

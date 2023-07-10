@@ -74,8 +74,8 @@ function(input, output, session) {
     
     mean_sd_plot<-ggplot() +
       geom_bar(data = filtered_data, aes(x = households), fill = "#C8DAEA", color = "#C8DAEA") +
-      geom_vline(xintercept = range_start, linetype = "solid", color = "green", size = 0.5) +
-      geom_vline(xintercept = range_end, linetype = "solid", color = "green", size = 0.5) +
+      geom_vline(xintercept = range_start, linetype = "solid", color = "#192A51", size = 0.5) +
+      geom_vline(xintercept = range_end, linetype = "solid", color = "#192A51", size = 0.5) +
       geom_vline(xintercept = mean_value, linetype = "solid", color = "#428bca", size = 0.5) +
       geom_vline(xintercept = quantiles[1:3], linetype = "dashed", color = "#428bca", size = 0.5) +
       geom_text(aes(x = quantiles[1:3], y = 0, label = c("Q1", "Q2", "Q3")), color = "black") + 
@@ -95,8 +95,8 @@ function(input, output, session) {
     mean_value <- round(mean(filtered_data$households),0)
     
     density_plot <- ggplot() +
-      geom_vline(xintercept = range_start, linetype = "solid", color = "green", size = 0.5) +
-      geom_vline(xintercept = range_end, linetype = "solid", color = "green", size = 0.5) +
+      geom_vline(xintercept = range_start, linetype = "solid", color = "#192A51", size = 0.5) +
+      geom_vline(xintercept = range_end, linetype = "solid", color = "#192A51", size = 0.5) +
       geom_vline(xintercept = mean_value, linetype = "solid", color = "#428bca", size = 0.5) +
       geom_density(data = filtered_data, aes(x = households), fill = "#C8DAEA", alpha = .5) +
       geom_vline(xintercept = quantiles[1:3], linetype = "dashed", color = "#428bca", size = 0.5) +
@@ -249,8 +249,8 @@ function(input, output, session) {
     
     hypo_plot <- ggplot() +
       geom_bar(data = data_r(), aes(x = households), fill = "#C8DAEA", color = "#C8DAEA") +
-      geom_vline(xintercept = input$hypo_range[1], linetype = "solid", color = "#a3a3a3", size = 0.5) +
-      geom_vline(xintercept = input$hypo_range[2], linetype = "solid", color = "#a3a3a3", size = 0.5) +
+      geom_vline(xintercept = input$hypo_range[1], linetype = "solid", color = "#192A51", size = 0.5) +
+      geom_vline(xintercept = input$hypo_range[2], linetype = "solid", color = "#192A51", size = 0.5) +
       geom_vline(xintercept = input$h0_grenze, linetype = "solid", color = "#428bca", size = 0.5) +
       geom_vline(xintercept = t_test$conf.int, linetype = "dashed", color = "#428bca", size = 0.5) +
       geom_text(aes(x = t_test$conf.int, y = 0, label = c("a/2", "1-(a/2)")), color = "black") + 
